@@ -1,9 +1,12 @@
+import sys
+import os
 import subprocess
 from colors import color_print, bcolors
 
 
-def run_prolog():
-    command = 'swipl -s /home/skalermo/Downloads/jps_astar/astar.pl -g "leash(-all),trace,start_A_star(a,X)." -t halt'
+def run_prolog(source_file):
+    path = os.path.abspath(source_file)
+    command = f'swipl -s {path} -g "leash(-all),trace,start." -t halt'
     result = subprocess.run([c.strip('"') for c in command.split()], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return result.stdout.decode('utf-8')
 
@@ -11,7 +14,11 @@ def run_prolog():
 def preprocess_line(line: str):
     if line.startswith('ERROR'):
         return 'ERROR', -1, line[7:]
-    todo, depth, instruc = line[3:].split(maxsplit=2)
+    split = line[3:].split(maxsplit=2)
+    if len(split) != 3:
+        print(split)
+        return None, 0, ''
+    todo, depth, instruc = split
     return todo[:-1], int(depth.strip('()')), instruc
 
 
@@ -74,6 +81,8 @@ def analyze_trace(lines: list):
         else:
             _, last_depth, _ = parsed_lines[i-1]
             cur_todo, cur_depth, _ = parsed_lines[i]
+            if cur_todo is None:
+                continue
             if i < len(parsed_lines)-1:
                 _, next_depth, _ = parsed_lines[i+1]
             else:
@@ -114,7 +123,10 @@ def print_with_indent(data, indent=()):
 
 
 def main():
-    trace_output = run_prolog()
+    if len(sys.argv) != 2:
+        print(f'Usage: python {sys.argv[0]} path/to/source/file')
+    source_file = sys.argv[1]
+    trace_output = run_prolog(source_file)
     analyze_trace(trace_output.splitlines()[:-1])
 
 
