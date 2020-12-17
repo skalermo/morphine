@@ -9,6 +9,8 @@ def run_prolog():
 
 
 def preprocess_line(line: str):
+    if line.startswith('ERROR'):
+        return 'ERROR', -1, line[7:]
     todo, depth, instruc = line[3:].split(maxsplit=2)
     return todo[:-1], int(depth.strip('()')), instruc
 
@@ -56,6 +58,7 @@ def parse_instruction(instruc: str):
 
         args = count_args()
         return predicate, args
+    return instruc, 0
 
 
 def analyze_trace(lines: list):
