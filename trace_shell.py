@@ -10,6 +10,7 @@ from trace_formatter import TraceFormatter
 
 class TraceShell:
     def __init__(self):
+        signal.signal(signal.SIGINT, self.signal_handler)
         self.swipl_p = None
         self.formatter = TraceFormatter()
 
@@ -64,14 +65,3 @@ class TraceShell:
             exit(0)
 
 
-def main():
-    if len(sys.argv) != 2:
-        print(f'Usage: python {sys.argv[0]} path/to/prolog/file')
-        return
-    shell = TraceShell()
-    signal.signal(signal.SIGINT, shell.signal_handler)
-    shell.run(sys.argv[1])
-
-
-if __name__ == '__main__':
-    main()
