@@ -12,3 +12,7 @@ class bcolors:
 
 def color_print(text, color=bcolors.OKGREEN, sep=' ', end='\n'):
     print(f'{color}{text}{bcolors.ENDC}', sep=sep, end=end)
+
+
+def color_sprint(text, color=bcolors.WARNING):
+    return f'{color}{text}{bcolors.ENDC}'
