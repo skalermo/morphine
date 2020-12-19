@@ -17,7 +17,7 @@ When output seems like swipl's tracing morphine formats it.
 ## Installation
 
 ```console
-pip install morphine
+pip install morphine-tracer
 ```
 
 ## Usage
