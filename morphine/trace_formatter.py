@@ -1,6 +1,7 @@
 import os
 import subprocess
-from colors import color_sprint, bcolors
+
+from morphine.colors import color_sprint, bcolors
 
 
 class TraceFormatter:

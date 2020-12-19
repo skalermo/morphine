@@ -5,7 +5,7 @@ import subprocess
 from subprocess import Popen, PIPE
 import threading
 
-from trace_formatter import TraceFormatter
+from morphine.trace_formatter import TraceFormatter
 
 
 class TraceShell:
